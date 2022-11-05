@@ -1,0 +1,59 @@
+{% extends "blog/base.html" %}
+    {% block title %}{{ post.title }}{% endblock %}
+        {% block content %}
+        <!-- Post content-->
+        <article>
+          <!-- Post header-->
+          <header class="mb-4">
+              <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+              <!-- Post meta content-->
+              <div class="text-muted fst-italic mb-2">
+                    Published {{ post.publish }} by {{ post.author }}
+              </div>
+
+          </header>
+          <!-- Preview image figure-->
+          <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+          <!-- Post content-->
+          <section class="mb-5">
+            <p class="fs-5 mb-4">
+              {{ post.body|linebreaks }}
+            </p>
+            <p>
+              <a href="{% url "blog:post_share" post.id %}" class="btn btn-info">
+                <i class="bi bi-share" style="font-size: 1.2rem; margin-right: 3;"></i>Share Post</a>
+            </p>
+        
+           </section>
+          </article>
+
+          <section class="mb-5">
+            <div class="card bg-light">
+              <div class="card-body">
+                {% with comments.count as total_comments %}
+                <h2>
+                  {{ total_comments }} comment{{ total_comments|pluralize }}
+                </h2>
+                {% endwith %}
+                {% for comment in comments %}
+                <div class="d-flex mb-4">
+                  <!-- Parent comment-->
+                  <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                  <div class="ms-3">
+                      <div class="fw-bold">{{ comment.name }}</div>
+                      <p class="text-muted fst-italic mb-2"><u>{{ comment.created }}</u><p>
+                      {{ comment.body|linebreaks }}
+                  </div>
+                    
+                </div >
+                    
+                {% empty %}
+                <p>There are no comments yet.</p>
+                {% endfor %}
+                {% include "blog/post/includes/comment_form.html" %}
+              </div>
+            </div>
+          </section>
+      {% comment %} {% endfor %}
+      {% include "blog/post/includes/comment_form.html" %} {% endcomment %}
+{% endblock %}
