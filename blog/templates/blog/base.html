@@ -1,5 +1,6 @@
+{% load blog_tags %}
+{% load static %}
 
-  {% load static %}
 <html>
   <head>
     <link href="{% static "css/bootswatch_lux.css"%}" rel="stylesheet" />
@@ -7,7 +8,7 @@
   </head>
     
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
         <a class="navbar-brand" href="#">Envy</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,18 +32,20 @@
             </li>
             
           </ul>
-          
+          <form class="d-flex" action="{% url "blog:post_search" %}" method="get">
+            {% csrf_token %}            
+            <input class="form-control me-sm-2" type="text" name="query" placeholder="Search"  value="{{query}}">
+            <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button> 
+          </form>
         </div>
       </div>
     </nav>
          
     <div class="container mt-5">
       <div class="row">
-          <!-- Blog entries-->
-          <div class="col-lg-8">      
+          <!-- Blog entries-->              
             {% block content %}
-            {% endblock %}
-        </div>
+            {% endblock %}            
       </div>
     </div>
   

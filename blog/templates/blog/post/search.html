@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+{% block title %}Search{% endblock %}
+
+{%block content%}
+{% comment %} {% if query %} {% endcomment %}
+<div class="col-lg-7">
+<h2>posts containing "{{query}}"</h2>
+<h3>
+    {% with results.count as tottal_results %}
+    Found {{tottal_results}} result{{tottal_results|pluralize}}
+    {% endwith %}
+</h3>
+{%for post in results %}
+    <h4>
+        <a href="{{ post.get_absolute_url }}">
+            {{ post.title }}
+        </a>
+    </h4>
+{{ post.body|markdown|truncatewords_html:12 }}
+{% empty %}
+    <p>There are no results for your query.</p>
+{% endfor %}
+{% comment %} {% endif %} {% endcomment %}
+    {% comment %} <form action="{% url 'post_list' %}" class="form-inline" method="get">
+        <button type="submit" class="btn btn-primary btn-lg mb-2">Back</button>
+    </form> {% endcomment %}
+</div>
+{%endblock%}
